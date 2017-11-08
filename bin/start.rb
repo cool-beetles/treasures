@@ -6,6 +6,9 @@ require '../lib/storage.rb'
 require '../lib/treasure.rb'
 require '../lib/type.rb'
 require '../lib/user.rb'
+require '../lib/collections/addresses_collection.rb'
+require '../lib/collections/treasures_collection.rb'
+require '../lib/collections/rentals_collection.rb'
 
 
 puts "Welcome to your treasures managment"
@@ -29,7 +32,7 @@ street = gets.chomp
 puts "Could you give me the zip code, please?"
 zip_code = gets.chomp
 address = Address.new(street, city, zip_code)
-user_1.add_address(street)
+user_1.add_address(address)
 
 puts "Address was added to you!"
 puts "You live in #{address.street} #{address.city} #{address.zip_code}"
@@ -81,7 +84,7 @@ friends_street = gets.chomp
 puts "Could you give me your friend's zip code, please?"
 friends_zip_code = gets.chomp
 friends_address = Address.new(friends_street, friends_city, friends_zip_code)
-friend.add_address(friends_street)
+friend.add_address(friends_address)
 
 
 puts "Awesome!"

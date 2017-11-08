@@ -16,6 +16,8 @@ class Rental
 
     @start_date = Date.today
     @due_date = due_date
+
+    RentalsCollection.add(self)
   end
 
   def change_due_date(new_date)

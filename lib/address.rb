@@ -8,9 +8,11 @@ class Address
     @street = street
     @city = city
     @zip_code = zip_code
+
+    AddressesCollection.add(self)
   end
 
-  def add_obcject(object)
+  def add_object(object)
     @object = object
     @object_klass = object.class.name
   end

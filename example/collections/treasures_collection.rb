@@ -2,7 +2,7 @@ class TreasuresCollection
   @@treasures = []
 
   def self.add(treasure)
-    @@treasures << address
+    @@treasures << treasure
   end
 
   def self.all
@@ -10,11 +10,11 @@ class TreasuresCollection
   end
 
   def self.find_by_id(id)
-    @@treasures.select { |treasure| treasure.id == id }.first
+    @@treasures.detect { |treasure| treasure.id == id }
   end
 
   def self.by_user(user)
-    @@treasures.select { |treasure| treasure.user.id == user.id }
+    @@treasures.select { |treasure| treasure.owner.id == user.id }
   end
 
   def self.by_type(type)

@@ -1,6 +1,6 @@
 class User
 
-  attr_reader :treasures, :rentals, :addresses, :id
+  attr_reader :id
   attr_accessor :first_name, :last_name, :age
 
   def initialize(first_name, last_name, age)
@@ -8,14 +8,23 @@ class User
     @first_name = first_name
     @last_name = last_name    
     @age = age
-    @addresses = []
-    @treasures = []
-    @rentals = []
+  end
+  
+  def addresses
+    AddressesCollection.by_user(self)
+  end
+
+  def rentals 
+    RentalsCollection.by_user(self)
+  end
+  
+  def treasures
+    TreasuresCollection.by_user(self)
   end
 
   def add_treasure(type, title, description)
     treasure = Treasure.new(self, type, title, description)
-    @treasures << treasure unless @treasures.include?(treasure)
+    treasure.owner = self
   end
 
   def add_rental(treasure, due_date)
@@ -23,7 +32,6 @@ class User
   end
 
   def add_address(address)
-    @addresses << address unless @addresses.include?(address)
     address.add_object(self)
   end
 end

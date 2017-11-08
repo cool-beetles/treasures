@@ -6,17 +6,21 @@ class Storage
   def initialize(name)
     @id =   Random.rand(1000..20000)
     @name = name
-    @addresses = []
-    @treasures = []
+  end
+
+  def addresses
+    AddressesCollection.by_storage(self)
+  end
+
+  def treasures
+    TreasuresCollection.by_storage(self)
   end
 
   def add_treasure(treasure)
-    @treasures << treasure unless @treasures.include?(treasure)
     treasure.storage = self
   end
 
   def add_address(address)
-    @addresses << address unless @addresses.include?(address)
     address.add_object(self)
   end
 end
