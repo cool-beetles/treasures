@@ -5,12 +5,12 @@ class Type
 
   def initialize(name)
     @name = name
-    @id = rand(1000..2000)
+    @id = Random.rand(1000..20000)
     @treasures = []
   end
 
   def add_treasure(treasure)
-    @treasures << treasure
+    @treasures << treasure unless @treasures.include?(treasure)
     treasure.type = self
   end
 end

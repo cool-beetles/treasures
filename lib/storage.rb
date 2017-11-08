@@ -4,18 +4,19 @@ class Storage
   attr_accessor :name
 
   def initialize(name)
-    @id = id
+    @id =   Random.rand(1000..20000)
     @name = name
     @addresses = []
+    @treasures = []
   end
 
   def add_treasure(treasure)
-    @treasures << treasure
+    @treasures << treasure unless @treasures.include?(treasure)
     treasure.storage = self
   end
 
   def add_address(address)
-    @addresses << address
-    address.storage = self
+    @addresses << address unless @addresses.include?(address)
+    address.add_object(self)
   end
 end

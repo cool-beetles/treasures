@@ -1,28 +1,30 @@
 class Treasure
 
-  attr_reader :rentals, :id, :storage, :special_note, :trashed, :owner
-  attr_accessor :type, :title, :description
+  attr_reader :id, :storage, :special_note, :trashed
+  attr_accessor :type, :title, :description, :owner, :rentals
 
   def initialize(owner, type, title, description)
-    @id = rand(1..1000)
+    @id = Random.rand(1000..20000)
+  
     @owner = owner
-    @type = type    
+    owner.treasures << self unless owner.treasures.include?(self)
+
+    @type = type
+    type.treasures << self unless type.treasures.include?(self)
+
     @title = title
     @description = description
-    @storage = storage    
-    @trashed = trashed
-    @special_note = special_note
+    @trashed = false
     @rentals = [] 
   end
 
-  def add_storage(storage_id)
-    @storage = storage_id
-    storage_id.treasure = self
+  def add_storage(storage)
+    @storage = storage
+    storage.treasures << self unless storage.treasures.include?(self)
   end
 
   def add_special_note(note)
     @special_note = note
-    note.treasure = self
   end
 
   def move_to_trash
@@ -30,10 +32,6 @@ class Treasure
   end
 
   def add_rental(user, due_date)
-    @user = user
-    user.rentals << self
-
-    @due_date = due_date
-    due_date.rentals << self
+    rental = Rental.new(user, self, due_date)
   end
 end

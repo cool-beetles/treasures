@@ -1,26 +1,28 @@
+require 'date'
+
 class Rental
 
   attr_reader :id, :due_date, :start_date, :return_date
   attr_accessor :user, :treasure
 
   def initialize(user, treasure, due_date)
-    @id = id
+    @id =  Random.rand(1000..20000)
     
     @user = user
-    user.rentals << self
+    user.rentals << self unless user.rentals.include?(self) 
 
     @treasure = treasure
-    @start_date = Time.at(Time.now.to_i)
+    treasure.rentals << self unless treasure.rentals.include?(self)
+
+    @start_date = Date.today
     @due_date = due_date
-    @return_date = []
   end
 
-  def change_due_date=(new_date)
+  def change_due_date(new_date)
     @due_date = new_date
   end
 
   def return
-    @return_date << (Time.at(Time.now.to_i))
-    (Time.at(Time.now.to_i)).rental = self
+    @return_date = Date.today
   end
 end
