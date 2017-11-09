@@ -20,4 +20,9 @@ class TypesCollection
       file.close
     }
   end
+
+  def self.load(file_name)
+    require 'pathname'
+    self.add(Dir.glob("#{file_name}/*.type"))
+  end
 end
