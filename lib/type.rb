@@ -6,6 +6,8 @@ class Type
   def initialize(name)
     @name = name
     @id = Random.rand(1000..20000)
+
+    TypesCollection.add(self)
   end
 
   def treasures

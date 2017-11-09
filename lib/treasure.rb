@@ -5,13 +5,8 @@ class Treasure
 
   def initialize(owner, type, title, description)
     @id = Random.rand(1000..20000)
-  
     @owner = owner
-    owner.treasures << self unless owner.treasures.include?(self)
-
     @type = type
-    type.treasures << self unless type.treasures.include?(self)
-
     @title = title
     @description = description
     @trashed = false
@@ -24,8 +19,7 @@ class Treasure
   end
 
   def add_storage(storage)
-    @storage = storage
-    storage.treasures << self unless storage.treasures.include?(self)
+    @storage.treasures = self
   end
 
   def add_special_note(note)

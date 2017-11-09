@@ -7,13 +7,8 @@ class Rental
 
   def initialize(user, treasure, due_date)
     @id =  Random.rand(1000..20000)
-    
     @user = user
-    user.rentals << self unless user.rentals.include?(self) 
-
     @treasure = treasure
-    treasure.rentals << self unless treasure.rentals.include?(self)
-
     @start_date = Date.today
     @due_date = due_date
 

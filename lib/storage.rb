@@ -1,11 +1,13 @@
 class Storage
 
-  attr_reader :treasures, :addresses, :id
+  attr_reader :id
   attr_accessor :name
 
   def initialize(name)
     @id =   Random.rand(1000..20000)
     @name = name
+
+    StoragesCollection.add(self)
   end
 
   def addresses

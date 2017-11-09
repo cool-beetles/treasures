@@ -9,6 +9,9 @@ require '../lib/user.rb'
 require '../lib/collections/addresses_collection.rb'
 require '../lib/collections/treasures_collection.rb'
 require '../lib/collections/rentals_collection.rb'
+require '../lib/collections/types_collection.rb'
+require '../lib/collections/storages_collection.rb'
+require '../lib/collections/users_collection.rb'
 
 
 puts "Welcome to your treasures managment"
@@ -106,5 +109,11 @@ selected_treasure = user_1.treasures.detect { |treasure| treasure.id == treasure
 friend.add_rental(selected_treasure, due_date)
 
 puts "Done! #{friend.rentals.last.user.first_name} needs to return #{friend.rentals.last.treasure.title} before #{due_date}."
-
 puts "That's enough for now. Remember to come back later!"
+
+UsersCollection.save
+AddressesCollection.save
+RentalsCollection.save
+StoragesCollection.save
+TypesCollection.save
+TreasuresCollection.save

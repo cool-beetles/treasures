@@ -24,4 +24,12 @@ class TreasuresCollection
   def self.by_storage(storage)
     @@treasures.select { |treasure| treasure.storage.id == storage.id }
   end
+
+  def self.save
+    @@treasures.each { |treasure| 
+      file = File.new("../lib/collections/treasures_files/#{treasure.id}.treasure","w")
+      file.puts("#{treasure.id}||#{treasure.owner.first_name}||#{treasure.type}||#{treasure.title}||#{treasure.description}||#{treasure.trashed}||#{treasure.storage}||#{treasure.special_note}")
+      file.close
+    }
+  end
 end

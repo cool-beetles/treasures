@@ -21,4 +21,11 @@ class RentalsCollection
     @@rentals.select { |rental| rental.treasure.id == treasure.id }
   end
 
+  def self.save
+    @@rentals.each { |rental| 
+      file = File.new("../lib/collections/rentals_files/#{rental.id}.rental","w")
+      file.puts("#{rental.id}||#{rental.user.first_name}||#{rental.treasure.title}||#{rental.treasure.id}||#{rental.due_date}")
+      file.close
+    }
+  end
 end
