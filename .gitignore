@@ -1,0 +1,9 @@
+
+# Databases #
+######################S
+*.treasure
+*.address
+*.rental
+*.storage
+*.type
+*.user
