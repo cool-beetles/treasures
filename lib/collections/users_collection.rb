@@ -25,4 +25,14 @@ class UsersCollection
     require 'pathname'
     self.add(Dir.glob("#{file_name}/*.user"))
   end
+
+  def self.load(file_name)
+    require 'pathname'
+    Dir["#{file_name}/*.user"].each do |user_file_path|
+      user_file = File.open(user_file_path, "r")
+      user_array = user_file.read.split("||")
+      user = User.new(user_array[1], user_array[2], user_array[3],)
+      self.add(user)
+    end
+  end
 end

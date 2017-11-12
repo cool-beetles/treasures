@@ -13,6 +13,10 @@ class TypesCollection
     @@types.detect { |type| type.id == id }    
   end
 
+  def self.by_name(name)
+    @@types.select { |type| type.name == name}    
+  end
+
   def self.save
     @@types.each { |type| 
       file = File.new("../lib/collections/types_files/#{type.id}.type","w")
@@ -24,5 +28,15 @@ class TypesCollection
   def self.load(file_name)
     require 'pathname'
     self.add(Dir.glob("#{file_name}/*.type"))
+  end
+
+  def self.load(file_name)
+    require 'pathname'
+    Dir["#{file_name}/*.type"].each do |type_file_path|
+      type_file = File.open(type_file_path, "r")
+      type_array = type_file.read.split("||")
+      type = Type.new(type_array[1])
+      self.add(Type)
+    end
   end
 end

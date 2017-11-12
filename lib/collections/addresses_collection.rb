@@ -33,4 +33,14 @@ class AddressesCollection
     require 'pathname'
     self.add(Dir.glob("#{file_name}/*.address"))
   end
+
+  def self.load(file_name)
+    require 'pathname'
+    Dir["#{file_name}/*.address"].each do |address_file_path|
+      address_file = File.open(address_file_path, "r")
+      address_array = address_file.read.split("||")
+      address = Address.new(address_array[1], address_array[2], address_array[3])
+      self.add(Address)
+    end
+  end
 end

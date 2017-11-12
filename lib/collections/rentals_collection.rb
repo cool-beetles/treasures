@@ -33,4 +33,14 @@ class RentalsCollection
     require 'pathname'
     self.add(Dir.glob("#{file_name}/*.rental"))
   end
+
+  def self.load(file_name)
+    require 'pathname'
+    Dir["#{file_name}/*.rental"].each do |rental_file_path|
+      rental_file = File.open(rental_file_path, "r")
+      rental_array = rental_file.read.split("||")
+      rental = Rental.new(rental_array[1], rental_array[2], rental_array[4])
+      self.add(Rental)
+    end
+  end
 end
