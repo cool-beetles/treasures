@@ -3,8 +3,8 @@ class User
   attr_reader :id
   attr_accessor :first_name, :last_name, :age
 
-  def initialize(first_name, last_name, age)
-    @id = Random.rand(1000..20000)
+  def initialize(id=Random.rand(1000..20000), first_name, last_name, age)
+    @id = id
     @first_name = first_name
     @last_name = last_name    
     @age = age

@@ -29,10 +29,9 @@ class StoragesCollection
   def self.load(file_name)
     require 'pathname'
     Dir["#{file_name}/*.storage"].each do |storage_file_path|
-      storage_file = File.open(storage_file_path, "r")
+      storage_file = File.open(storage_file_path)
       storage_array = storage_file.read.split("||")
-      storage = Storage.new(storage_array[1])
-      self.add(Storage)
+      storage = Storage.new(storage_array[0], storage_array[1])
     end
   end
 end

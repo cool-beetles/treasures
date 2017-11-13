@@ -33,10 +33,9 @@ class TypesCollection
   def self.load(file_name)
     require 'pathname'
     Dir["#{file_name}/*.type"].each do |type_file_path|
-      type_file = File.open(type_file_path, "r")
+      type_file = File.open(type_file_path)
       type_array = type_file.read.split("||")
-      type = Type.new(type_array[1])
-      self.add(Type)
+      type = Type.new(type_array[0], type_array[1])
     end
   end
 end

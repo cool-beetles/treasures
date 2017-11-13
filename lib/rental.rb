@@ -5,8 +5,8 @@ class Rental
   attr_reader :id, :due_date, :start_date, :return_date
   attr_accessor :user, :treasure
 
-  def initialize(user, treasure, due_date)
-    @id =  Random.rand(1000..20000)
+  def initialize(id=Random.rand(1000..20000), user, treasure, due_date)
+    @id =  id
     @user = user
     @treasure = treasure
     @start_date = Date.today

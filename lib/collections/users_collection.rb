@@ -29,10 +29,9 @@ class UsersCollection
   def self.load(file_name)
     require 'pathname'
     Dir["#{file_name}/*.user"].each do |user_file_path|
-      user_file = File.open(user_file_path, "r")
+      user_file = File.open(user_file_path)
       user_array = user_file.read.split("||")
-      user = User.new(user_array[1], user_array[2], user_array[3],)
-      self.add(user)
+      user = User.new(user_array[0], user_array[1], user_array[2], user_array[3])
     end
   end
 end

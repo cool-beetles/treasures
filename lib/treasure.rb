@@ -3,8 +3,8 @@ class Treasure
   attr_reader :id, :storage, :special_note, :trashed
   attr_accessor :type, :title, :description, :owner
 
-  def initialize(owner, type, title, description)
-    @id = Random.rand(1000..20000)
+  def initialize(id=Random.rand(1000..20000), owner, type, title, description)
+    @id = id
     @owner = owner
     @type = type
     @title = title

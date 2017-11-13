@@ -3,9 +3,9 @@ class Type
   attr_reader :id
   attr_accessor :name
 
-  def initialize(name)
+  def initialize(id=Random.rand(1000..20000), name)
     @name = name
-    @id = Random.rand(1000..20000)
+    @id = id
 
     TypesCollection.add(self)
   end

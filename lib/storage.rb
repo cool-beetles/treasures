@@ -3,8 +3,8 @@ class Storage
   attr_reader :id
   attr_accessor :name
 
-  def initialize(name)
-    @id =   Random.rand(1000..20000)
+  def initialize(id=Random.rand(1000..20000), name)
+    @id = id
     @name = name
 
     StoragesCollection.add(self)
