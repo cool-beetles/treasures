@@ -28,7 +28,7 @@ class TreasuresCollection
   def self.save
     @@treasures.each { |treasure| 
       file = File.new("../lib/collections/treasures_files/#{treasure.id}.treasure","w")
-      file.puts("#{treasure.id}||#{treasure.owner.id}||#{treasure.type.name}||#{treasure.title}||#{treasure.description}||#{treasure.trashed}||#{treasure.storage.id}||#{treasure.storage.name}||#{treasure.special_note}")
+      file.puts("#{treasure.id}||#{treasure.owner.id}||#{treasure.owner.first_name}||#{treasure.owner.last_name}||#{treasure.owner.age}||#{treasure.type.id}||#{treasure.type.name}||#{treasure.title}||#{treasure.description}||#{treasure.trashed}||#{treasure.storage.id}||#{treasure.storage.name}||#{treasure.special_note}")
       file.close
     }
   end
@@ -38,8 +38,25 @@ class TreasuresCollection
     Dir["#{file_name}/*.treasure"].each do |treasure_file_path|
       treasure_file = File.open(treasure_file_path)
       treasure_array = treasure_file.read.split("||")
-      owner = UsersCollection.find_by_id(treasure_array[1])    
-      treasure = Treasure.new(treasure_array[0], owner, treasure_array[2], treasure_array[3], treasure_array[4])
+
+      owner_id = treasure_array[1]
+      first_name = treasure_array[2]
+      last_name = treasure_array[3]
+      age = treasure_array[4]
+      owner = User.new(owner_id, first_name, last_name, age)
+
+      type_id = treasure_array[5]
+      type_name = treasure_array[6]
+      type = Type.new(type_id, type_name)
+
+      storage_id = treasure_array[11]
+      storage_name = treasure_array[12]
+      storage = Storage.new(storage_id, storage_name)
+
+      treasure_id = treasure_array[0]
+      treasure_title = treasure_array[7]
+      treasure_description = treasure_array[8]
+      treasure = Treasure.new(treasure_id, owner, type, treasure_title, treasure_description)
     end
   end
 end

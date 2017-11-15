@@ -3,7 +3,7 @@ class Storage
   attr_reader :id
   attr_accessor :name
 
-  def initialize(id=Random.rand(1000..20000), name)
+  def initialize(id = Random.rand(1000..20000), name)
     @id = id
     @name = name
 

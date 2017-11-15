@@ -3,7 +3,7 @@ class Address
   attr_reader :id
   attr_accessor :street, :city, :zip_code
 
-  def initialize(id=Random.rand(1000..20000), street, city, zip_code)
+  def initialize(id = Random.rand(1000..20000), street, city, zip_code)
     @id = id
     @street = street
     @city = city
