@@ -24,7 +24,8 @@ class AddressesCollection
   def self.save
     @@addresses.each { |address| 
       file = File.new("../lib/collections/addresses_files/#{address.id}.address","w")
-      file.puts("#{address.id}||#{address.street}||#{address.city}||#{address.zip_code}")
+      file.puts("#{address.id}||#{address.street}||#{address.city}||#{address.zip_code}||#{address.object.id}"+
+        "||#{address.object_klass}")
       file.close
     }
   end
@@ -40,6 +41,17 @@ class AddressesCollection
       city = address_array[2]
       zip_code = address_array[3]
       address = Address.new(address_id, street, city, zip_code)
+
+      object_id = address_array[4]
+      object_klass = address_array[5]
+
+      if object_klass.downcase == "user"
+        object = UsersCollection.find_by_id(object_id)
+      elsif object_klass.downcase == "storage"
+        object = StoragesCollection.find_by_id(object_id)
+      end
+
+      address.add_object(object)
     end
   end
 end

@@ -28,7 +28,13 @@ class TreasuresCollection
   def self.save
     @@treasures.each { |treasure| 
       file = File.new("../lib/collections/treasures_files/#{treasure.id}.treasure","w")
-      file.puts("#{treasure.id}||#{treasure.owner.id}||#{treasure.owner.first_name}||#{treasure.owner.last_name}||#{treasure.owner.age}||#{treasure.type.id}||#{treasure.type.name}||#{treasure.title}||#{treasure.description}||#{treasure.trashed}||#{treasure.storage.id}||#{treasure.storage.name}||#{treasure.special_note}")
+      if treasure.storage == nil
+        file.puts("#{treasure.id}||#{treasure.owner.id}||#{treasure.type.id}||#{treasure.title}" + 
+          "||#{treasure.description}||#{treasure.trashed}|| ||#{treasure.special_note}")
+      else
+        file.puts("#{treasure.id}||#{treasure.owner.id}||#{treasure.type.id}||#{treasure.title}" + 
+          "||#{treasure.description}||#{treasure.trashed}||#{treasure.storage.id}||#{treasure.special_note}")
+      end
       file.close
     }
   end
@@ -40,22 +46,17 @@ class TreasuresCollection
       treasure_array = treasure_file.read.split("||")
 
       owner_id = treasure_array[1]
-      first_name = treasure_array[2]
-      last_name = treasure_array[3]
-      age = treasure_array[4]
-      owner = User.new(owner_id, first_name, last_name, age)
+      owner = UsersCollection.find_by_id(owner_id)
 
-      type_id = treasure_array[5]
-      type_name = treasure_array[6]
-      type = Type.new(type_id, type_name)
+      type_id = treasure_array[2]
+      type = TypesCollection.find_by_id(type_id)
 
-      storage_id = treasure_array[11]
-      storage_name = treasure_array[12]
-      storage = Storage.new(storage_id, storage_name)
+      storage_id = treasure_array[6]
+      storage = StoragesCollection.find_by_id(storage_id)
 
       treasure_id = treasure_array[0]
-      treasure_title = treasure_array[7]
-      treasure_description = treasure_array[8]
+      treasure_title = treasure_array[3]
+      treasure_description = treasure_array[4]
       treasure = Treasure.new(treasure_id, owner, type, treasure_title, treasure_description)
     end
   end
