@@ -28,13 +28,11 @@ class TreasuresCollection
   def self.save
     @@treasures.each { |treasure| 
       file = File.new("../lib/collections/treasures_files/#{treasure.id}.treasure","w")
-      if treasure.storage == nil
-        file.puts("#{treasure.id}||#{treasure.owner.id}||#{treasure.type.id}||#{treasure.title}" + 
-          "||#{treasure.description}||#{treasure.trashed}|| ||#{treasure.special_note}")
-      else
-        file.puts("#{treasure.id}||#{treasure.owner.id}||#{treasure.type.id}||#{treasure.title}" + 
-          "||#{treasure.description}||#{treasure.trashed}||#{treasure.storage.id}||#{treasure.special_note}")
-      end
+
+      storage_id = treasure.storage ? treasure.storage.id : nil
+
+      file.puts("#{treasure.id}||#{treasure.owner.id}||#{treasure.type.id}||#{treasure.title}" + 
+        "||#{treasure.description}||#{treasure.trashed}||#{storage_id}||#{treasure.special_note}")
       file.close
     }
   end
@@ -58,6 +56,9 @@ class TreasuresCollection
       treasure_title = treasure_array[3]
       treasure_description = treasure_array[4]
       treasure = Treasure.new(treasure_id, owner, type, treasure_title, treasure_description)
+
+      special_note = treasure_array[7]
+      treasure.add_special_note(special_note)
     end
   end
 end

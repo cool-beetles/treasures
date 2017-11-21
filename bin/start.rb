@@ -127,6 +127,104 @@ RentalsCollection.load("../lib/collections/rentals_files")
 AddressesCollection.load("../lib/collections/addresses_files")
 
 
+puts "Users list:"
+UsersCollection.all.map do |user| 
+  puts "#{user.id} #{user.first_name} #{user.last_name}"
+end
+
+puts "give me your id:"
+user_id = gets.chomp
+current_user = UsersCollection.find_by_id(user_id)
+puts "-----------------------------------------"
+puts "Your treasures:"
+treasures = TreasuresCollection.by_user(current_user)
+
+treasures.each do |treasure|
+  puts "#{treasure.id} #{treasure.title} #{treasure.description}"
+end
+puts "-----------------------------------------"
+
+puts "add new treasures? (y/n)"
+more_tresures = gets.chomp
+
+while more_tresures == "y" do
+  puts "available type's id:"
+  types = TypesCollection.all.map do |type|
+    puts "#{type.name}"
+  end
+  
+  puts "give me type name"
+  type_name = gets.chomp
+  
+  if (TypesCollection.by_name(type_name)) != type_name
+    type = Type.new(type_name)
+  elsif (TypesCollection.by_name(type_name)) == type_name
+    type = TypesCollection.by_name(type_name)
+  end
+  
+  puts "title"
+  title = gets.chomp
+  puts "description"
+  description = gets.chomp
+  current_user.add_treasure(type, title, description)
+  puts "Wanna add more? (y/n)"
+  more_tresures = gets.chomp
+end
+
+puts "add storage for your treasures? (y/n)"
+treasure_storage = gets.chomp
+
+while treasure_storage == "y" do 
+  puts "street"
+  street = gets.chomp
+  puts "city"
+  city = gets.chomp
+  puts "zip_code"
+  zip_code = gets.chomp
+  storage_address = Address.new(street, city, zip_code)
+
+  puts "-----------------------------------------"
+  puts "storage names:"
+  StoragesCollection.all.map do |storage|
+    puts "#{storage.name}"
+  end 
+
+  puts "storage name"
+  storage_name = gets.chomp
+
+  if (StoragesCollection.by_name(storage_name)) != storage_name
+    storage = Storage.new(storage_name)
+  elsif (StoragesCollection.by_name(storage_name)) == storage_name
+    storage = StoragesCollection.by_name(storage_name)
+  end
+  storage.add_address(storage_address)
+
+  puts "-----------------------------------------"
+  puts "Now, Your treasures:"
+  treasures = TreasuresCollection.by_user(current_user)
+  treasures.each do |treasure|
+    puts "#{treasure.id} #{treasure.title} #{treasure.description}"
+  end
+  puts "-----------------------------------------"
+
+  puts "treasure_id"
+  treasure_id = gets.chomp
+  treasure = TreasuresCollection.find_by_id(treasure_id) 
+  treasure.add_storage(storage)
+ 
+  puts "Wanna add more places?"
+  treasure_storage = gets.chomp
+end
+
+puts "Bye!"
+
+TreasuresCollection.save
+TypesCollection.save
+RentalsCollection.save
+UsersCollection.save
+AddressesCollection.save
+StoragesCollection.save
+
 
 #                                    !!!!!!!!!!!!!!!!!! END !!!!!!!!!!!!!!!!
 #------------------------------------------------------------------------------------------------------------

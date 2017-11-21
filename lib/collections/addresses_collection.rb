@@ -24,8 +24,8 @@ class AddressesCollection
   def self.save
     @@addresses.each { |address| 
       file = File.new("../lib/collections/addresses_files/#{address.id}.address","w")
-      file.puts("#{address.id}||#{address.street}||#{address.city}||#{address.zip_code}||#{address.object.id}"+
-        "||#{address.object_klass}")
+        file.puts("#{address.id}||#{address.street}||#{address.city}||#{address.zip_code}||#{address.object.id}" +
+          "||#{address.object_klass}")
       file.close
     }
   end

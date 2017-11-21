@@ -39,15 +39,16 @@ class RentalsCollection
       user_id = rental_array[1]
       user = UsersCollection.find_by_id(user_id)
     
-      owner_id = rental_array[6]
+      owner_id = rental_array[3]
       owner = UsersCollection.find_by_id(owner_id)
 
-      treasure_id = rental_array[5]      
+      treasure_id = rental_array[2]      
       treasure = TreasuresCollection.find_by_id(treasure_id)
       
       rental_id = rental_array[0]
-      due_date = rental_array[13]
+      due_date = rental_array[4]
       rental = Rental.new(rental_id, user, treasure, due_date)
+
     end
   end
 end

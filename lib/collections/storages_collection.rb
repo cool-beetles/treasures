@@ -13,6 +13,10 @@ class StoragesCollection
     @@storages.detect { |storage| storage.id == id }    
   end
 
+  def self.by_name(name)
+    @@storages.select { |storage| storage.name == name }    
+  end
+
   def self.save
     @@storages.each { |storage| 
       file = File.new("../lib/collections/storages_files/#{storage.id}.storage","w")
