@@ -19,7 +19,7 @@ class Storage
   end
 
   def add_treasure(treasure)
-    treasure.storage = self
+    treasures.storage = self
   end
 
   def add_address(address)

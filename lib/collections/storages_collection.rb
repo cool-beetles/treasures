@@ -29,9 +29,9 @@ class StoragesCollection
     require 'pathname'
     Dir["#{file_name}/*.storage"].each do |storage_file_path|
       storage_file = File.open(storage_file_path)
-      storage_array = storage_file.read.split("||")
+      storage_array = storage_file.read.strip.split("||")
 
-      storage_id = storage_array[0]
+      storage_id = storage_array[0].to_i
       storage_name = storage_array[1]
       storage = Storage.new(storage_id, storage_name)
     end

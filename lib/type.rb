@@ -11,7 +11,7 @@ class Type
   end
 
   def treasures
-    TreasuresCollection.by_type(self)
+    TreasuresCollection.by_type_name(self)
   end
 
   def add_treasure(treasure)

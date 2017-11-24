@@ -34,21 +34,17 @@ class RentalsCollection
     require 'pathname'
     Dir["#{file_name}/*.rental"].each do |rental_file_path|
       rental_file = File.open(rental_file_path)
-      rental_array = rental_file.read.split("||")
+      rental_array = rental_file.read.strip.split("||")
     
-      user_id = rental_array[1]
+      user_id = rental_array[1].to_i
       user = UsersCollection.find_by_id(user_id)
     
-      owner_id = rental_array[3]
-      owner = UsersCollection.find_by_id(owner_id)
-
-      treasure_id = rental_array[2]      
+      treasure_id = rental_array[2].to_i     
       treasure = TreasuresCollection.find_by_id(treasure_id)
       
-      rental_id = rental_array[0]
-      due_date = rental_array[4]
+      rental_id = rental_array[0].to_i
+      due_date = Date.parse(rental_array[4])
       rental = Rental.new(rental_id, user, treasure, due_date)
-
     end
   end
 end

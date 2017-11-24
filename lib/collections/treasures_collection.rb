@@ -14,7 +14,7 @@ class TreasuresCollection
   end
 
   def self.by_user(user)
-    @@treasures.select { |treasure| treasure.owner.id == user.id }
+    @@treasures.select { |treasure| treasure.owner.id == user.id}
   end
 
   def self.by_type_name(name)
@@ -41,18 +41,18 @@ class TreasuresCollection
     require 'pathname'
     Dir["#{file_name}/*.treasure"].each do |treasure_file_path|
       treasure_file = File.open(treasure_file_path)
-      treasure_array = treasure_file.read.split("||")
+      treasure_array = treasure_file.read.strip.split("||")
 
-      owner_id = treasure_array[1]
+      owner_id = treasure_array[1].to_i
       owner = UsersCollection.find_by_id(owner_id)
 
-      type_id = treasure_array[2]
+      type_id = treasure_array[2].to_i
       type = TypesCollection.find_by_id(type_id)
 
-      storage_id = treasure_array[6]
+      storage_id = treasure_array[6].to_i
       storage = StoragesCollection.find_by_id(storage_id)
 
-      treasure_id = treasure_array[0]
+      treasure_id = treasure_array[0].to_i
       treasure_title = treasure_array[3]
       treasure_description = treasure_array[4]
       treasure = Treasure.new(treasure_id, owner, type, treasure_title, treasure_description)

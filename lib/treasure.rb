@@ -1,7 +1,7 @@
 class Treasure
 
-  attr_reader :id, :special_note, :trashed, :rental
-  attr_accessor :type, :title, :description, :owner, :storage
+  attr_reader :id, :special_note, :trashed, :rental, :storage
+  attr_accessor :type, :title, :description, :owner
 
   def initialize(id = Random.rand(1000..20000), owner, type, title, description)
     @id = id
@@ -16,6 +16,10 @@ class Treasure
 
   def rentals 
     RentalsCollection.by_treasure(self)
+  end
+
+  def add_storage(storage)
+    @storage = storage
   end
 
   def add_special_note(note)
