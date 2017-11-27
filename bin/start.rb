@@ -31,13 +31,18 @@ puts "-----------------------------------------"
 
 
 puts "Users list:"
-UsersCollection.all.map do |user| 
-  puts "#{user.id} #{user.first_name} #{user.last_name}"
+if UsersCollection.all.count == 0
+  puts "NO USERS"
+  puts "Add user"
+  more_users = "y"
+else 
+  UsersCollection.all.map do |user| 
+    puts "#{user.id} #{user.first_name} #{user.last_name}"
+  end
+  puts "-----------------------------------------"
+  puts "Add user? (y/n)"
+  more_users = gets.chomp
 end
-
-puts "-----------------------------------------"
-puts "Add user? (y/n)"
-more_users = gets.chomp
 
 while more_users == "y" do
   puts "Give me:"
@@ -48,7 +53,6 @@ while more_users == "y" do
   puts "age"
   age = gets.chomp
   user = User.new(first_name, last_name, age)
-  puts "Id for user: #{user.id}"
   puts "Now, address:"
   puts "city"
   city = gets.chomp
@@ -61,22 +65,27 @@ while more_users == "y" do
   puts "Do You wanna add more users? (y/n)"
   more_users = gets.chomp
 end
-  
+
 puts "-----------------------------------------"
+puts "Now, list of users:"
+UsersCollection.all.map do |user| 
+  puts "#{user.id} #{user.first_name} #{user.last_name}"
+end  
+puts "-----------------------------------------"
+
 puts "Give me Your id:"
 user_id = gets.chomp.to_i
 current_user = UsersCollection.find_by_id(user_id)
 puts "-----------------------------------------"
 
 puts "Your treasures:"
-treasures = TreasuresCollection.by_user(current_user)
-  if treasures.count == 0
+if (current_user.treasures).count == 0
   puts "You have no treasures"
-  else
-    treasures.each do |treasure|
-      puts "#{treasure.id} #{treasure.title} #{treasure.description}"
-    end
+else
+  (current_user.treasures).each do |treasure|
+    puts "#{treasure.id} #{treasure.title} #{treasure.description}"
   end
+end
 puts "-----------------------------------------"
 
 puts "Do You wanna add new treasures? (y/n)"
@@ -88,11 +97,11 @@ while more_treasures == "y" do
     puts "#{type.name}"
   end
 
-  puts "Give me type name"
+  puts "Give me existing type name (or new type name, so I can create it for you)"
   type_name = gets.chomp
   types = TypesCollection.all.map(&:name)
   type_position = types.find_index(type_name)
-  if types[type_position] == type_name
+  if type_position != nil && types[type_position] == type_name
     type = TypesCollection.by_name(type_name)
   else
     type = Type.new(type_name)
@@ -112,79 +121,84 @@ puts "Now, Your list of treasures:"
 treasures = TreasuresCollection.by_user(current_user)
 treasures.each do |treasure|
   puts "id: #{treasure.id}, title: #{treasure.title}, description: #{treasure.description}"
+puts "-----------------------------------------"
 end
 
-puts "-----------------------------------------"
-puts "Do You wanna add storage for Your treasures? (y/n)"
-treasure_storage = gets.chomp
+if TreasuresCollection.all.count == 0
+  puts "That's all. Thank You!"
+else
+  puts "Do You wanna add storage for Your treasures? (y/n)"
+  treasure_storage = gets.chomp
 
-while treasure_storage == "y" do 
-  puts "storage names:"
-  StoragesCollection.all.map do |storage|
-    puts "#{storage.name}"
-  end 
-  puts "Give me chosen storage name"
-  storage_name = gets.chomp
-  storages = StoragesCollection.all.map(&:name)
-  storage_position = storages.find_index(storage_name)
-  if storages[storage_position] == storage_name
-    storage = StoragesCollection.by_name(storage_name)
-  else
-    storage = Storage.new(storage_name)
-    puts "street"
-    street = gets.chomp
-    puts "city"
-    city = gets.chomp
-    puts "zip_code"
-    zip_code = gets.chomp
-    storage_address = Address.new(street, city, zip_code)
-    storage.add_address(storage_address)
-  end
+  while treasure_storage == "y" do 
+    puts "storage names:"
+    StoragesCollection.all.map do |storage|
+      puts "#{storage.name}"
+    end 
+    
+    puts "Give me storage name (or new storage name, so I can create it for you)"
+    storage_name = gets.chomp
+    storages = StoragesCollection.all.map(&:name)
+    storage_position = storages.find_index(storage_name)
+    if storage_position != nil && storages[storage_position] == storage_name
+      storage = StoragesCollection.by_name(storage_name)
+    else
+      storage = Storage.new(storage_name)
+      puts "street"
+      street = gets.chomp
+      puts "city"
+      city = gets.chomp
+      puts "zip_code"
+      zip_code = gets.chomp
+      storage_address = Address.new(street, city, zip_code)
+      storage.add_address(storage_address)
+    end
 
-  puts "List of treasures:"
-  treasures = TreasuresCollection.by_user(current_user)
-  treasures.each do |treasure|
-  puts "id: #{treasure.id}, title: #{treasure.title}, description: #{treasure.description}"
+    puts "List of treasures:"
+    treasures = TreasuresCollection.by_user(current_user)
+    treasures.each do |treasure|
+      puts "id: #{treasure.id}, title: #{treasure.title}, description: #{treasure.description}"
+    end
+
+    puts "-----------------------------------------"
+    puts "Give me treasure id"
+    treasure_id = gets.chomp.to_i
+    treasure = TreasuresCollection.find_by_id(treasure_id)
+    treasure.add_storage(storage)
+   
+    puts "Do You wanna add more places? (y/n)"
+    treasure_storage = gets.chomp
   end
 
   puts "-----------------------------------------"
+
+  puts "Rent some of Your treasures:"
+  puts "List of treasures:"
+  treasures = TreasuresCollection.by_user(current_user)
+  treasures.each do |treasure|
+    puts "id: #{treasure.id}, title: #{treasure.title}, description: #{treasure.description}"
+  end
+  puts "-----------------------------------------"
+
   puts "Give me treasure id"
   treasure_id = gets.chomp.to_i
-  treasure = TreasuresCollection.find_by_id(treasure_id)
-  treasure.add_storage(storage)
- 
-  puts "Do You wanna add more places? (y/n)"
-  treasure_storage = gets.chomp
-end
+  puts "Until (YYYY-MM-DD):"
+  due_date = gets.chomp
+  Date.parse(due_date)
+  puts "Available users:"
+  UsersCollection.all.map do |user| 
+    puts "id: #{user.id}, name: #{user.first_name}, surname: #{user.last_name}"
+  end
 
-puts "-----------------------------------------"
-puts "Rent some of Your treasures:"
-  
-puts "List of treasures:"
-treasures = TreasuresCollection.by_user(current_user)
-treasures.each do |treasure|
-  puts "id: #{treasure.id}, title: #{treasure.title}, description: #{treasure.description}"
-end
-puts "-----------------------------------------"
-
-puts "Give me treasure id"
-treasure_id = gets.chomp.to_i
-puts "Until (YYYY-MM-DD):"
-due_date = gets.chomp
-Date.parse(due_date)
-puts "Available users:"
-UsersCollection.all.map do |user| 
-  puts "id: #{user.id}, name: #{user.first_name}, surname: #{user.last_name}"
-end
-
-puts "-----------------------------------------"
-puts "Give me user id:"
-user_id = gets.chomp.to_i
-rental_user = UsersCollection.find_by_id(user_id)
-selected_treasure = current_user.treasures.detect { |treasure| treasure.id == treasure_id }
-rental_user.add_rental(selected_treasure, due_date)
-puts "Done! #{rental_user.rentals.last.user.first_name} needs to return #{rental_user.rentals.last.treasure.title} before #{due_date}."
-puts "-----------------------------------------"
+  puts "-----------------------------------------"
+  puts "Give me user id:"
+  user_id = gets.chomp.to_i
+  rental_user = UsersCollection.find_by_id(user_id)
+  selected_treasure = current_user.treasures.detect { |treasure| treasure.id == treasure_id }
+  rental_user.add_rental(selected_treasure, due_date)
+  puts "Done! #{rental_user.rentals.last.user.first_name} needs to return #{rental_user.rentals.last.treasure.title} before #{due_date}."
+  puts "-----------------------------------------"
+end 
 
 TypesCollection.save
 RentalsCollection.save
