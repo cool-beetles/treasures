@@ -19,3 +19,16 @@ You are going to create this kind of system. It will be a console application. A
 - each id should be genearted random number betwee 1000 and 20000
 - all attr used during initialization should be changeable (i.e. setter is needed)
 - in order to test your system, please improve `bin/start.rb` file (curently it onle includes a draft of interaction with user)
+
+------------------------------
+
+In order to start the app: 
+
+- open your console
+- open directory with start.rb file:
+'cd treasures/bin'
+- run start.rb file with Ruby srript:
+'ruby start.rb'
+- execute commads
+
+Now, you have own data. You can modificate and keep informations of treasures.
